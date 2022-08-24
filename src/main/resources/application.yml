@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: "jdbc:mysql://192.168.1.252:3306/meetingPro?createDatabaseIfNotExist=true&autoReconnect=true&failOverReadOnly=false&useSSL=false"
+    username: "sohel"
+    password: "Remi@123"
+DB_NAME: "meetingPro"
