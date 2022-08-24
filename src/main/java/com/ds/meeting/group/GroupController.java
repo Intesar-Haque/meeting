@@ -13,6 +13,7 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    @CrossOrigin("*")
     @PostMapping("/list")
     public ResponseEntity<?> list(@RequestBody PageRequestDto request) {
         return groupService.groupList(request);
