@@ -15,13 +15,6 @@ import javax.xml.transform.OutputKeys;
 @RequiredArgsConstructor
 public class TestController {
 
-    private final AuthenticationManager authenticationManager;
-    @PostMapping("/authenticate")
-    public ResponseEntity<?> test(@RequestParam String username, @RequestParam String password){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        System.out.println(authentication.getPrincipal());
-        return ResponseEntity.ok("OK");
-    }
     @PostMapping("/test")
     public ResponseEntity<?> test(){return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication().getName());
     }

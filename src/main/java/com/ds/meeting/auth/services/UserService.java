@@ -7,4 +7,6 @@ public interface UserService {
     Integer getCurrentUserId();
 
     ResponseEntity<?> createUser(Users user);
+
+    String authenticate(String username, String password);
 }

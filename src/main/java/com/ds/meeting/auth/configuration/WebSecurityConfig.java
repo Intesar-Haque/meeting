@@ -81,16 +81,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setUserDetailsService(usersService);
         return provider;
     }
-    @Bean
-    CorsConfigurationSource corsConfigurationSource()
-    {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "DELETE", "UPDATE"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource()
+//    {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("*"));
+//        configuration.setAllowedMethods(Arrays.asList(""));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
     @Bean
     @Override
@@ -98,24 +98,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    //.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().and().csrf().disable().exceptionHandling()
+        httpSecurity.csrf().disable()
+                .exceptionHandling()
                 .and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().anyRequest()
-                .authenticated();
-        httpSecurity.headers().frameOptions().sameOrigin()
-                .cacheControl();
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .and().authorizeRequests()
+                .antMatchers("/authenticate", "/logout","/register")
+                .permitAll()
+                .antMatchers("/**")
+                .permitAll()
+                .anyRequest()
+                .hasAuthority("USER");
+        httpSecurity.headers().frameOptions().sameOrigin().cacheControl();
     }
 
-    @Override
-    public void configure(WebSecurity webSecurity) {
-        webSecurity.ignoring().antMatchers(POST, "/authenticate")
-                .antMatchers(OPTIONS, "/**").and().ignoring()
-                .antMatchers("/logout","/login")
-                .and().ignoring().antMatchers(POST,"/ping");
-    }
+//    @Override
+//    public void configure(WebSecurity webSecurity) {
+//        webSecurity.ignoring().antMatchers(OPTIONS, "/**")
+//                .and().ignoring().antMatchers("/authenticate", "/logout","/register");
+//    }
 
 }
 
